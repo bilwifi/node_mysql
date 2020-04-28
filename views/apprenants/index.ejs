@@ -14,11 +14,29 @@
         <li><%= apprenant.nom %> <%= apprenant.prenom %> 
             <a href="/apprenants/<%= apprenant.id %>">Voir détails</a>
             <a href="/apprenants/update/<%= apprenant.id %>">Modifier</a>
-            <a href="/apprenants/<%= apprenant.id %>">Supprimer</a>
+            <a href="/apprenants/<%= apprenant.id %>" class="delete" id="<%= apprenant.id %>">Supprimer</a>
         </li>
         <% } %>
     </ul>
     <p><a href="/apprenants/new">Ajouter un nouvel apprenant</a></p>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const deleteLink = document.querySelectorAll('.delete');
+        for (let index = 0; index < deleteLink.length; index++) {
+            deleteLink[index].addEventListener('click',function(e){
+                e.preventDefault();
+                if (confirm("Voulez-vous supprimer cet apprennant ??")) {
+                    axios.delete("apprenants/"+deleteLink[index].id).then(function(response){
+                        if(response.data) location = "/apprenants";
+                    }).catch((error)=>{
+                        console.log(error);
+                    })
+                }
+            });
+            
+        }
+
+    </script>
 </body>
 
 </html>

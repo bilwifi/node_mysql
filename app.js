@@ -6,7 +6,7 @@ const mysql = require('mysql');
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  database: 'kda_node_js_mysql_test',
+  database: 'kda_node_js_mysql_test', //j'ai déjà une base de donnée nommé kda_test
   password: 'root',
 });
 
@@ -23,6 +23,7 @@ const server = express();
 
 //Dire à express de mettre les données venants du formulaire dans BODY
 server.use(express.urlencoded({ extended: false }));
+server.use(express.json());
 
 //Dire à express où aller trouver les vues(Nos pages web que le user sait voir)
 server.set('views');
@@ -47,6 +48,7 @@ server.post('/apprenants', (req, res) => {
   );
 });
 
+
 server.get('/apprenants/new', (req, res) => {
   return res.render('apprenants/new');
 });
@@ -57,6 +59,37 @@ server.get('/apprenants/:id', (req, res) => {
     (erreur, resultat) => {
       if (erreur) throw erreur;
       return res.render('apprenants/show', { apprenant: resultat[0] });
+    }
+  );
+});
+
+server.get('/apprenants/update/:id', (req, res) => {
+  connection.query(
+    `select * from students where id=${req.params.id}`,
+    (erreur, resultat) => {
+      if (erreur) throw erreur;
+      return res.render('apprenants/new', { apprenant: resultat[0] });
+    }
+  );
+});
+
+server.put('/apprenants/:id', (req, res) => {
+  connection.query(
+    `update students SET nom = '${req.body.nom}', prenom ='${req.body.prenom}' where id=${req.params.id}`,
+    (erreur, resultat) => {
+      if (erreur) throw erreur;
+      return res.send(true);
+    }
+  );
+});
+
+// Delete
+server.delete('/apprenants/:id',(req,res)=>{
+  connection.query(
+    `DELETE FROM students  where id=${req.params.id}`,
+    (erreur, resultat) => {
+      if (erreur) throw erreur;
+      return res.send(true);
     }
   );
 });

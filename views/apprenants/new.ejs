@@ -9,15 +9,37 @@
 
 <body>
     <a href="/apprenants">&lt;-Retourner à liste</a>
-    <h1>Nouvel apprenant</h1>
+    <h1><%=typeof apprenant !== 'undefined' ? 'Modifier apprenant': 'Nouvel apprenant' %> </h1>
     <form action="/apprenants" method="POST">
+        <% if(typeof apprenant !== 'undefined'){%>
+            <input type="text" value="<%=apprenant.id%>" id="id" hidden>
+        <%}%>
         <label for="nom">Nom</label><br>
-        <input type="text" name="nom" />
+        <input type="text" name="nom" id="nom" value="<%=typeof apprenant !== 'undefined' ? apprenant.nom : '' %>"/>
         <br><br>
         <label for="prenom">Prenom</label><br>
-        <input type="text" name="prenom" /><br>
-        <input type="submit" value="Créer" />
+        <input type="text" name="prenom" id="prenom" value="<%= typeof apprenant !== 'undefined' ? apprenant.prenom : '' %>"/><br>
+        <input type="submit" id="submit" value="<%=typeof apprenant !== 'undefined' ? 'Modifier' : 'Créer' %>" />
     </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const btnSubmit = document.querySelector("#submit");
+        const id_apprenat = document.querySelector("#id");
+        const nom = document.querySelector("#nom");
+        const prenom = document.querySelector("#prenom");
+        btnSubmit.addEventListener('click',function(e){
+            if (btnSubmit.value == "Modifier") {
+                e.preventDefault();
+                axios.put(`/apprenants/${id_apprenat.value}`,{nom : nom.value, prenom : prenom.value}).then(function(response){
+                    if(response.data) location = "/apprenants";
+                }).catch(function(error){
+                    console.log(error);
+                    
+                });
+            }
+        })
+    </script>
 </body>
 
 </html>
