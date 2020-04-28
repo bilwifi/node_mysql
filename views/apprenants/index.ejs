@@ -11,7 +11,11 @@
     <h1>Liste des apprenants</h1>
     <ul>
         <% for(let apprenant of apprenants) {%>
-        <li><%= apprenant.nom %> <%= apprenant.prenom %> <a href="/apprenants/<%= apprenant.id %>">Voir détails</a></li>
+        <li><%= apprenant.nom %> <%= apprenant.prenom %> 
+            <a href="/apprenants/<%= apprenant.id %>">Voir détails</a>
+            <a href="/apprenants/update/<%= apprenant.id %>">Modifier</a>
+            <a href="/apprenants/<%= apprenant.id %>">Supprimer</a>
+        </li>
         <% } %>
     </ul>
     <p><a href="/apprenants/new">Ajouter un nouvel apprenant</a></p>

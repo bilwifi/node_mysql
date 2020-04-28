@@ -6,7 +6,7 @@ const mysql = require('mysql');
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  // database: 'kda_test',
+  database: 'kda_node_js_mysql_test',
   password: 'root',
 });
 
@@ -38,7 +38,6 @@ server.get('/apprenants', (req, res) => {
 });
 
 server.post('/apprenants', (req, res) => {
-  console.log('BB');
   connection.query(
     `insert into students(nom,prenom) values('${req.body.nom}','${req.body.prenom}')`,
     (erreur, resultat) => {
